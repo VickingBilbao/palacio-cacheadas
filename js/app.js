@@ -100,7 +100,8 @@
     const supdate = () => {
       const r = photo.getBoundingClientRect();
       const vh = window.innerHeight || 1;
-      const p = Math.min(Math.max((vh - r.top) / (vh + r.height), 0), 1);   // entra embaixo → sai em cima
+      const raw = Math.min(Math.max((vh - r.top) / (vh + r.height), 0), 1);
+      const p = raw * raw;   // ease-in: segura a cena-herói (arco+cobre) na chegada, só avança ao rolar
       sdraw(Math.min(SF - 1, Math.round(p * (SF - 1))));
       stick = false;
     };
@@ -110,7 +111,7 @@
         if (!ssized && im.naturalWidth) { spa.width = im.naturalWidth; spa.height = im.naturalHeight; ssized = true; scur = -1; }
         supdate();
       };
-      im.src = `assets/headspa-frames/h_${spad(i)}.jpg`;
+      im.src = `assets/headspa-frames/h_${spad(i)}.jpg?v=2`;
       sim.push(im);
     }
     addEventListener('scroll', () => { if (!stick) { requestAnimationFrame(supdate); stick = true; } }, { passive: true });
