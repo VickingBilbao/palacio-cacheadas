@@ -93,7 +93,7 @@ body.has-intro .hdr .nav{opacity:var(--navop,0)}
 .community__photo{position:relative}
 .community__photo img{width:100%;height:auto;display:block;filter:drop-shadow(0 26px 50px rgba(43,26,20,.16))}
 /* foto no canto esquerdo, sem invadir o cacho (Victor: "mais no canto onde estavam originalmente") */
-.community .community__photo{width:min(680px,52vw)}
+.community .community__photo{width:min(680px,52vw);margin-left:auto;margin-right:auto}
 .community__cap{margin-top:1.3rem;max-width:46ch;font-size:.98rem;font-weight:340;line-height:1.6;color:var(--ink-soft);text-wrap:pretty}
 .community__cap strong{font-family:var(--ff-display);font-style:italic;font-weight:500;color:var(--espresso)}
 .community__names{display:block;margin-top:.5rem;font-size:.74rem;font-weight:460;letter-spacing:.16em;text-transform:uppercase;color:var(--cobre)}
@@ -178,10 +178,11 @@ body.has-intro .hdr .nav{opacity:var(--navop,0)}
 
 /* ---------- responsivo ---------- */
 @media (max-width:900px){
-  .curl-stage{opacity:.4}
+  .curl-stage{opacity:.42}
+  .curl-canvas,.curl-fallback{object-position:72% center}
   .col{width:100%;margin-left:0;padding-inline:var(--pad)}
   .nav a:not(.btn){display:none}
-  .community__photo{margin-left:0;padding-inline:var(--pad);width:100%}
+  .community .community__photo{margin-left:0;padding-inline:var(--pad);width:100%}
   .testimonials{grid-template-columns:1fr;margin-left:0;padding-inline:var(--pad);width:100%;gap:16px}
   .feature-grid{grid-template-columns:1fr;gap:2.2rem}
   .feature-copy{max-width:none}
@@ -190,7 +191,7 @@ body.has-intro .hdr .nav{opacity:var(--navop,0)}
   .display,.quote{max-width:none}
 }
 @media (max-width:480px){
-  .curl-stage{opacity:.35}
+  .curl-stage{opacity:.4}
   .hero__title{font-size:clamp(2.4rem,11vw,3.2rem)}
   .nav{gap:9px}
   .btn--pill{padding:.6em 1.05em;font-size:.74rem}

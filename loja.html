@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,400..600&family=Jost:wght@300..500&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="css/styles.css?v=7" />
-<link rel="stylesheet" href="css/loja.css?v=5" />
+<link rel="stylesheet" href="css/loja.css?v=7" />
 </head>
 <body class="shop-body">
 
@@ -40,12 +40,16 @@
 
   <!-- LINHA EXCLUSIVA (marca própria) -->
   <section class="linha" id="linha">
-    <div class="section-head" data-rise>
-      <p class="kicker">Linha exclusiva · marca própria</p>
-      <h2 class="display">Linha <em>Palácio das Cacheadas</em></h2>
-      <p class="lead">Nossa própria linha de tratamento, formulada para cabelos cacheados e crespos — do shampoo ao óleo finalizador, com nossos pacotes de cronograma e definição.</p>
+    <div class="linha-banner" data-rise>
+      <img class="linha-banner__bg" src="assets/loja/linha-banner.jpg" alt="" loading="lazy" />
+      <div class="linha-banner__text">
+        <p class="kicker">Linha exclusiva · marca própria</p>
+        <h2 class="display">Linha <em>Palácio das Cacheadas</em></h2>
+        <p class="lead">Tratamento próprio para cabelos cacheados e crespos — do shampoo ao óleo finalizador, com pacotes de cronograma e definição.</p>
+        <a href="#linha-grid" class="btn btn--solid">Ver a linha</a>
+      </div>
     </div>
-    <ul class="shop-grid" data-grid-linha></ul>
+    <ul class="shop-grid" data-grid-linha id="linha-grid"></ul>
   </section>
 
   <!-- MAIS PRODUTOS (outras marcas) -->

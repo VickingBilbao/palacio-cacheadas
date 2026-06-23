@@ -46,7 +46,11 @@
   document.querySelectorAll('[data-rise]').forEach(el => io.observe(el));
   document.querySelectorAll('.hero [data-rise]').forEach((el, i) => setTimeout(() => el.classList.add('in'), 120 + i * 90));
 
-  /* ---- cacho-mola: scrub frame-a-frame pelo scroll da página ---- */
+  /* ---- cacho-mola: scrub; tipo de cacho SORTEADO por sessão/refresh ---- */
+  const CURLSETS = ['spring', 'spring2'];
+  const cset = CURLSETS[Math.floor(Math.random() * CURLSETS.length)];
+  const curlFb = document.querySelector('[data-curl-fallback]');
+  if (curlFb) curlFb.src = `assets/${cset}/f_001.jpg`;
   const canvas = document.querySelector('[data-curl-canvas]');
   if (canvas && !reduced) {
     const FRAMES = 60;
@@ -67,7 +71,7 @@
         if (loaded >= Math.min(14, FRAMES) && !ready) { ready = true; canvas.classList.add('ready'); }
         update();
       };
-      im.src = `assets/spring/f_${pad(i)}.jpg`;
+      im.src = `assets/${cset}/f_${pad(i)}.jpg`;
       imgs.push(im);
     }
     let ticking = false;

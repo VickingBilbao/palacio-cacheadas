@@ -83,8 +83,21 @@
 .section-head{margin-bottom:1.8rem;max-width:42ch}
 .section-head .display{font-size:clamp(1.7rem,3.8vw,2.9rem);margin-top:.2rem}
 .section-head .lead{max-width:56ch;margin-top:.85rem}
-.linha{position:relative;margin-bottom:clamp(2.6rem,5vw,4rem);padding:clamp(1.5rem,3vw,2.8rem);border-radius:24px;background:linear-gradient(165deg,var(--creme-2),rgba(239,224,209,0) 72%);border:1px solid var(--line)}
-.linha .section-head .display em{font-style:italic;color:var(--terracota)}
+.linha{position:relative;margin-bottom:clamp(2.6rem,5vw,4rem)}
+.linha-banner{position:relative;border-radius:18px;overflow:hidden;margin-bottom:clamp(1.8rem,3.5vw,2.8rem);min-height:clamp(300px,30vw,440px);display:flex;align-items:center;box-shadow:0 20px 50px rgba(43,26,20,.14)}
+.linha-banner__bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center right;z-index:0}
+.linha-banner::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(245,231,218,.95),rgba(245,231,218,.55) 45%,rgba(245,231,218,0) 72%)}
+.linha-banner__text{position:relative;z-index:2;padding:clamp(1.6rem,4.5vw,3.6rem);max-width:min(580px,92%)}
+.linha-banner__text .kicker{margin-bottom:1rem}
+.linha-banner__text .display{font-size:clamp(1.7rem,4vw,3.2rem);color:var(--espresso);max-width:13ch}
+.linha-banner__text .display em{font-style:italic;color:var(--terracota)}
+.linha-banner__text .lead{max-width:42ch;margin:.7rem 0 1.5rem;color:var(--ink-soft)}
+@media (max-width:560px){
+  .linha-banner{display:block;min-height:0;overflow:visible;box-shadow:none}
+  .linha-banner__bg{position:static;height:200px;border-radius:16px;box-shadow:0 14px 34px rgba(43,26,20,.16)}
+  .linha-banner::before{display:none}
+  .linha-banner__text{padding:1.3rem 0 0;max-width:100%}
+}
 .mais{margin-top:1rem}
 
 /* badge "Exclusivo" */
