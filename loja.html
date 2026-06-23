@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Palácio das Cacheadas — Loja</title>
+<meta name="description" content="Produtos para cabelos cacheados, ondulados e crespos selecionados pelo Palácio das Cacheadas. Kits, finalizadores e tratamentos. Peça pelo WhatsApp." />
+<meta property="og:title" content="Palácio das Cacheadas — Loja" />
+<meta property="og:description" content="Produtos para cachos selecionados a dedo. Peça pelo WhatsApp." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,400..600&family=Jost:wght@300..500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/styles.css?v=7" />
+<link rel="stylesheet" href="css/loja.css?v=3" />
+</head>
+<body class="shop-body">
+
+<div class="grain" aria-hidden="true"></div>
+
+<!-- header -->
+<header class="hdr shop-hdr scrolled" data-header>
+  <a href="index.html" class="logo" aria-label="Palácio das Cacheadas — início"><img src="assets/logo.svg" alt="Palácio das Cacheadas" /></a>
+  <nav class="nav" aria-label="Navegação">
+    <a href="index.html">← Voltar ao site</a>
+    <a href="index.html#headspa">Serviços</a>
+    <button class="btn btn--pill cart-btn" data-cart-open aria-label="Abrir sacola">
+      Sacola <span class="cart-count" data-cart-count>0</span>
+    </button>
+  </nav>
+</header>
+
+<main class="shop" id="top">
+
+  <!-- hero da loja -->
+  <section class="shop-hero">
+    <p class="kicker" data-rise>Loja · Produtos para cachos</p>
+    <h1 class="shop-hero__title" data-rise>Cuidado que continua <em>em casa.</em></h1>
+    <p class="lead" data-rise>Selecionamos finalizadores, kits e tratamentos para a sua curvatura. Escolha, monte a sacola e finalize o pedido direto no nosso WhatsApp — com opção de Pix.</p>
+  </section>
+
+  <!-- filtros -->
+  <div class="shop-filters" data-filters aria-label="Filtrar por categoria"></div>
+
+  <!-- grade de produtos -->
+  <ul class="shop-grid" data-grid></ul>
+
+  <!-- vazio -->
+  <p class="shop-empty" data-empty hidden>Nenhum produto nesta categoria.</p>
+
+</main>
+
+<footer class="footer shop-footer" id="contato">
+  <div class="col">
+    <p class="footer__tag" data-rise>Beleza que vem da raiz.<br />Poder que é seu.</p>
+    <div class="footer__grid" data-rise>
+      <div><h4>Onde estamos</h4><p>Rua Benjamin Constant, 61 — Sala 1808<br />Centro · São Vicente/SP</p></div>
+      <div><h4>Horário</h4><p>Terça a sábado<br />09h às 19h</p></div>
+      <div><h4>Pedidos</h4><p><a href="https://wa.me/5513974081198" target="_blank" rel="noopener">WhatsApp (13) 97408-1198</a><br /><a href="https://www.instagram.com/palaciodascacheadas/" target="_blank" rel="noopener">@palaciodascacheadas</a></p></div>
+    </div>
+    <p class="footer__fine">Pagamento via Pix ou combinado pelo WhatsApp · © 2026 Palácio das Cacheadas</p>
+  </div>
+</footer>
+
+<!-- sacola (drawer) -->
+<div class="cart-backdrop" data-cart-backdrop hidden></div>
+<aside class="cart" data-cart aria-label="Sacola de compras" aria-hidden="true">
+  <div class="cart__head">
+    <h2>Sua sacola</h2>
+    <button class="cart__close" data-cart-close aria-label="Fechar sacola">✕</button>
+  </div>
+  <ul class="cart__items" data-cart-items></ul>
+  <p class="cart__empty" data-cart-empty>Sua sacola está vazia.<br /><span>Adicione produtos para continuar.</span></p>
+  <div class="cart__foot" data-cart-foot hidden>
+    <div class="cart__total"><span>Total</span><strong data-cart-total>R$ 0,00</strong></div>
+    <a class="btn btn--solid cart__checkout" data-cart-checkout target="_blank" rel="noopener">Finalizar no WhatsApp</a>
+    <p class="cart__note">Você confirma o pedido e o pagamento (Pix) com a gente no WhatsApp.</p>
+  </div>
+</aside>
+
+<script src="js/loja-data.js?v=1"></script>
+<script src="js/loja.js?v=1"></script>
+</body>
+</html>
