@@ -1,40 +1,64 @@
 /* ========================================================================
-   PALÁCIO DAS CACHEADAS — LOJA (catálogo + carrinho + checkout WhatsApp)
+   PALÁCIO DAS CACHEADAS — LOJA
+   Linha exclusiva (marca própria) em destaque + demais produtos + carrinho
    ===================================================================== */
 (() => {
   const WHATSAPP = '5513974081198';
-  const PRODUCTS = (window.PRODUCTS || []).map(p => ({
-    ...p,
-    img: 'assets/loja/' + p.img.split('/').pop(),
-    brand: /·\s*([^·]+)$/.test(p.title) ? p.title.match(/·\s*([^·]+)$/)[1].trim() : '',
-    name: p.title.replace(/\s*·\s*[^·]+$/, '').trim(),
-    cat: category(p.title)
-  }));
+  const brl = n => n.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  const esc = s => (s || '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
   function category(t) {
-    t = t.toLowerCase();
+    t = (t || '').toLowerCase();
     if (/kit|kitão/.test(t)) return 'Kits';
     if (/máscara|mascara|óleo|oleo|shampoo|condicionador|tratamento/.test(t)) return 'Tratamento';
     if (/ativador|modelador|mousse|gelatina|creme/.test(t)) return 'Finalizadores';
     return 'Outros';
   }
-  const brl = n => n.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  const norm = p => {
+    const m = /·\s*([^·]+)$/.exec(p.title || '');
+    return {
+      ...p,
+      img: 'assets/loja/' + String(p.img).split('/').pop(),
+      brand: p.brand || (m ? m[1].trim() : ''),
+      name: p.name || (p.title || '').replace(/\s*·\s*[^·]+$/, '').trim(),
+      cat: p.cat || (p.kind === 'pacote' ? 'Pacotes' : category(p.title))
+    };
+  };
+  const EXCL = (window.LINHA || []).map(p => norm({ ...p, exclusive: true, brand: 'Palácio das Cacheadas' }));
+  const OTHER = (window.PRODUCTS || []).map(norm);
+  const ALL = [...EXCL, ...OTHER];
+  const find = id => ALL.find(p => p.id === id);
 
-  /* ---------- carrinho (estado + persistência) ---------- */
-  let cart = {};
-  try { cart = JSON.parse(localStorage.getItem('pdc_cart') || '{}'); } catch (e) { cart = {}; }
-  const save = () => { try { localStorage.setItem('pdc_cart', JSON.stringify(cart)); } catch (e) {} };
-  const find = id => PRODUCTS.find(p => p.id === id);
-  const count = () => Object.values(cart).reduce((a, b) => a + b, 0);
-  const total = () => Object.entries(cart).reduce((s, [id, q]) => s + (find(id)?.price || 0) * q, 0);
+  /* ---------- card ---------- */
+  const card = p => `
+    <li class="card${p.exclusive ? ' card--excl' : ''}">
+      <div class="card__media">
+        ${p.exclusive ? '<span class="card__badge">Exclusivo</span>' : ''}
+        <img src="${p.img}" alt="${esc(p.name)}" loading="lazy" />
+      </div>
+      <div class="card__body">
+        ${p.exclusive
+          ? `<span class="card__brand">${p.kind === 'pacote' ? 'Pacote' : 'Linha Palácio'}</span>`
+          : (p.brand ? `<span class="card__brand">${esc(p.brand)}</span>` : '')}
+        <h3 class="card__title">${esc(p.name)}</h3>
+        <div class="card__spacer"></div>
+        <div class="card__row">
+          <span class="card__price">${brl(p.price)}<small>à vista</small></span>
+          <button class="card__add" data-add="${p.id}">Adicionar</button>
+        </div>
+      </div>
+    </li>`;
 
-  /* ---------- render: filtros + grade ---------- */
+  /* ---------- seção linha exclusiva ---------- */
+  const gridLinha = document.querySelector('[data-grid-linha]');
+  if (gridLinha) gridLinha.innerHTML = EXCL.map(card).join('');
+
+  /* ---------- demais produtos + filtros ---------- */
   const grid = document.querySelector('[data-grid]');
   const filtersEl = document.querySelector('[data-filters]');
   const emptyEl = document.querySelector('[data-empty]');
   let activeCat = 'Todos';
-
-  const cats = ['Todos', ...['Kits', 'Finalizadores', 'Tratamento', 'Outros'].filter(c => PRODUCTS.some(p => p.cat === c))];
+  const cats = ['Todos', ...['Kits', 'Finalizadores', 'Tratamento', 'Outros'].filter(c => OTHER.some(p => p.cat === c))];
   filtersEl.innerHTML = cats.map(c => `<button class="chip${c === 'Todos' ? ' is-active' : ''}" data-cat="${c}">${c}</button>`).join('');
   filtersEl.addEventListener('click', e => {
     const b = e.target.closest('.chip'); if (!b) return;
@@ -42,36 +66,19 @@
     filtersEl.querySelectorAll('.chip').forEach(c => c.classList.toggle('is-active', c === b));
     renderGrid();
   });
-
   function renderGrid() {
-    const list = activeCat === 'Todos' ? PRODUCTS : PRODUCTS.filter(p => p.cat === activeCat);
+    const list = activeCat === 'Todos' ? OTHER : OTHER.filter(p => p.cat === activeCat);
     emptyEl.hidden = list.length > 0;
-    grid.innerHTML = list.map(p => `
-      <li class="card">
-        <div class="card__media"><img src="${p.img}" alt="${esc(p.name)}" loading="lazy" /></div>
-        <div class="card__body">
-          ${p.brand ? `<span class="card__brand">${esc(p.brand)}</span>` : ''}
-          <h3 class="card__title">${esc(p.name)}</h3>
-          <div class="card__spacer"></div>
-          <div class="card__row">
-            <span class="card__price">${brl(p.price)}<small>à vista</small></span>
-            <button class="card__add" data-add="${p.id}">Adicionar</button>
-          </div>
-        </div>
-      </li>`).join('');
+    grid.innerHTML = list.map(card).join('');
   }
-  const esc = s => (s || '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
-  grid.addEventListener('click', e => {
-    const b = e.target.closest('[data-add]'); if (!b) return;
-    const id = b.dataset.add;
-    cart[id] = (cart[id] || 0) + 1; save(); updateCart();
-    b.textContent = 'Adicionado ✓'; b.classList.add('added');
-    setTimeout(() => { b.textContent = 'Adicionar'; b.classList.remove('added'); }, 1100);
-    openCart();
-  });
+  /* ---------- carrinho ---------- */
+  let cart = {};
+  try { cart = JSON.parse(localStorage.getItem('pdc_cart') || '{}'); } catch (e) { cart = {}; }
+  const save = () => { try { localStorage.setItem('pdc_cart', JSON.stringify(cart)); } catch (e) {} };
+  const count = () => Object.values(cart).reduce((a, b) => a + b, 0);
+  const total = () => Object.entries(cart).reduce((s, [id, q]) => s + (find(id)?.price || 0) * q, 0);
 
-  /* ---------- sacola (drawer) ---------- */
   const cartEl = document.querySelector('[data-cart]');
   const backdrop = document.querySelector('[data-cart-backdrop]');
   const itemsEl = document.querySelector('[data-cart-items]');
@@ -88,9 +95,17 @@
   backdrop.addEventListener('click', closeCart);
   addEventListener('keydown', e => { if (e.key === 'Escape') closeCart(); });
 
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-add]'); if (!b) return;
+    const id = b.dataset.add;
+    cart[id] = (cart[id] || 0) + 1; save(); updateCart();
+    b.textContent = 'Adicionado ✓'; b.classList.add('added');
+    setTimeout(() => { b.textContent = 'Adicionar'; b.classList.remove('added'); }, 1100);
+    openCart();
+  });
+
   function updateCart() {
-    const c = count();
-    countEl.textContent = c;
+    countEl.textContent = count();
     const ids = Object.keys(cart).filter(id => cart[id] > 0 && find(id));
     emptyCart.hidden = ids.length > 0;
     footEl.hidden = ids.length === 0;
@@ -131,7 +146,7 @@
     return `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`;
   }
 
-  /* ---------- reveals (sem app.js aqui) ---------- */
+  /* ---------- reveals ---------- */
   if (!matchMedia('(prefers-reduced-motion:reduce)').matches) {
     const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: 0.12 });
     document.querySelectorAll('[data-rise]').forEach(el => io.observe(el));
