@@ -82,4 +82,40 @@
     addEventListener('load', update);
     update();
   }
+
+  /* ---- Head Spa: vídeo scrubbado pelo scroll da seção ---- */
+  const spa = document.querySelector('[data-spa-canvas]');
+  if (spa && !reduced) {
+    const SF = 48;
+    const sctx = spa.getContext('2d');
+    const sim = []; let ssized = false, scur = -1;
+    const spad = n => String(n).padStart(3, '0');
+    const photo = spa.closest('.headspa__photo');
+    const sdraw = idx => {
+      const im = sim[idx];
+      if (!im || !im.complete || !im.naturalWidth || idx === scur) return;
+      scur = idx; sctx.clearRect(0, 0, spa.width, spa.height); sctx.drawImage(im, 0, 0, spa.width, spa.height);
+    };
+    let stick = false;
+    const supdate = () => {
+      const r = photo.getBoundingClientRect();
+      const vh = window.innerHeight || 1;
+      const p = Math.min(Math.max((vh - r.top) / (vh + r.height), 0), 1);   // entra embaixo → sai em cima
+      sdraw(Math.min(SF - 1, Math.round(p * (SF - 1))));
+      stick = false;
+    };
+    for (let i = 1; i <= SF; i++) {
+      const im = new Image();
+      im.onload = () => {
+        if (!ssized && im.naturalWidth) { spa.width = im.naturalWidth; spa.height = im.naturalHeight; ssized = true; scur = -1; }
+        supdate();
+      };
+      im.src = `assets/headspa-frames/h_${spad(i)}.jpg`;
+      sim.push(im);
+    }
+    addEventListener('scroll', () => { if (!stick) { requestAnimationFrame(supdate); stick = true; } }, { passive: true });
+    addEventListener('resize', () => { if (!stick) { requestAnimationFrame(supdate); stick = true; } }, { passive: true });
+    addEventListener('load', supdate);
+    supdate();
+  }
 })();

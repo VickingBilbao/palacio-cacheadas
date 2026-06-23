@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,400..600&family=Jost:wght@300..500&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/styles.css?v=8" />
+<link rel="stylesheet" href="css/styles.css?v=9" />
 </head>
 <body>
 
@@ -112,7 +112,8 @@
         <a href="https://wa.me/5513974081198?text=Oi!%20Quero%20conhecer%20o%20Head%20Spa." class="btn btn--solid" data-rise target="_blank" rel="noopener">Viver o Head Spa</a>
       </div>
       <figure class="headspa__photo" data-rise>
-        <img src="assets/headspa.jpg?v=9" alt="Ritual de Head Spa no Palácio das Cacheadas — arco dourado com cascata de água sobre o cabelo cacheado natural" loading="lazy" />
+        <img src="assets/headspa-frames/h_001.jpg" alt="Ritual de Head Spa no Palácio das Cacheadas — arco dourado com cascata de água sobre o cabelo cacheado natural" class="headspa__fallback" data-spa-fallback loading="lazy" />
+        <canvas class="headspa__canvas" data-spa-canvas aria-hidden="true"></canvas>
         <figcaption class="headspa__cap">Ritual sensorial · 90 min</figcaption>
       </figure>
     </div>
@@ -217,6 +218,6 @@
 
 </main>
 
-<script src="js/app.js?v=7"></script>
+<script src="js/app.js?v=8"></script>
 </body>
 </html>
