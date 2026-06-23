@@ -25,6 +25,7 @@
       const ty = (t.top + t.height / 2 - window.innerHeight / 2) * e;
       brand.style.transform = `translate(-50%,-50%) translate(${tx}px,${ty}px) scale(${scale})`;
       header.style.setProperty('--navop', e.toFixed(3));
+      document.documentElement.style.setProperty('--introp', e.toFixed(3)); // mobile: cacho desliza/some no scroll
       header.classList.toggle('scrolled', p > 0.9);
       brand.classList.toggle('docked', p > 0.98);
     };
@@ -46,8 +47,8 @@
   document.querySelectorAll('[data-rise]').forEach(el => io.observe(el));
   document.querySelectorAll('.hero [data-rise]').forEach((el, i) => setTimeout(() => el.classList.add('in'), 120 + i * 90));
 
-  /* ---- cacho-mola: scrub; tipo de cacho SORTEADO por sessão/refresh ---- */
-  const CURLSETS = ['spring', 'spring2'];
+  /* ---- cacho-mola: scrub do cacho escuro definido (sway) ---- */
+  const CURLSETS = ['curl-dark'];
   const cset = CURLSETS[Math.floor(Math.random() * CURLSETS.length)];
   const curlFb = document.querySelector('[data-curl-fallback]');
   if (curlFb) curlFb.src = `assets/${cset}/f_001.jpg`;
