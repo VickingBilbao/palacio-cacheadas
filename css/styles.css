@@ -184,6 +184,7 @@ body.has-intro .hdr .nav{opacity:var(--navop,0)}
   .curl-canvas,.curl-fallback{object-position:72% center}
   .brandmark{width:min(400px,60vw)}
   .brandmark::before{display:none} /* respiro de creme só no desktop (sobre creme); mobile separa espacialmente */
+  .brandmark img{filter:none} /* sem drop-shadow no mobile — re-renderiza ao escalar = trancos */
   .col{width:100%;margin-left:0;padding-inline:var(--pad)}
   .nav a:not(.btn){display:none}
   .community .community__photo{margin-left:0;padding-inline:var(--pad);width:100%}

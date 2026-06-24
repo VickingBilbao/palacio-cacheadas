@@ -14,28 +14,36 @@
   if (hasIntro) {
     document.body.classList.add('has-intro');
     const easeInOut = t => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+    const curlStage = document.querySelector('.curl-stage');
+    let tW = 0, tCx = 0, tCy = 0, baseW = 1;            // destino (header) cacheado
+    const measure = () => {                              // mede só no load/resize, FORA do scroll → sem layout-thrash (fim dos trancos)
+      const t = headerLogo.getBoundingClientRect();
+      tW = t.width; tCx = t.left + t.width / 2; tCy = t.top + t.height / 2;
+      baseW = brand.offsetWidth || 1;
+    };
     const dock = () => {
       const introH = window.innerHeight || 1;          // transição = 1 viewport de scroll
       const p = Math.min(Math.max(window.scrollY / introH, 0), 1);
       const e = easeInOut(p);
-      const t = headerLogo.getBoundingClientRect();     // destino: lugar do logo no header
-      const baseW = brand.offsetWidth || 1;
-      const scale = 1 + (t.width / baseW - 1) * e;
+      const scale = 1 + (tW / baseW - 1) * e;
       const introDx = window.innerWidth <= 900 ? -window.innerWidth * 0.12 * (1 - e) : 0; // mobile: logo levemente à esquerda no intro, some ao ancorar
-      const tx = (t.left + t.width / 2 - window.innerWidth / 2) * e + introDx;
-      const ty = (t.top + t.height / 2 - window.innerHeight / 2) * e;
+      const tx = (tCx - window.innerWidth / 2) * e + introDx;
+      const ty = (tCy - window.innerHeight / 2) * e;
       brand.style.transform = `translate(-50%,-50%) translate(${tx}px,${ty}px) scale(${scale})`;
-      header.style.setProperty('--navop', e.toFixed(3));
-      document.documentElement.style.setProperty('--introp', e.toFixed(3)); // mobile: cacho desliza/some no scroll
+      const es = e.toFixed(3);
+      header.style.setProperty('--navop', es);
+      // --introp só nos CONSUMIDORES (cacho + brandmark), não no :root → invalidação de estilo mínima = fluido
+      if (curlStage) curlStage.style.setProperty('--introp', es);
+      brand.style.setProperty('--introp', es);
       header.classList.toggle('scrolled', p > 0.9);
       brand.classList.toggle('docked', p > 0.98);
     };
     let tick = false;
     const onScroll = () => { if (!tick) { tick = true; requestAnimationFrame(() => { dock(); tick = false; }); } };
     addEventListener('scroll', onScroll, { passive: true });
-    addEventListener('resize', dock, { passive: true });
-    addEventListener('load', dock);
-    dock();
+    addEventListener('resize', () => { measure(); dock(); }, { passive: true });
+    addEventListener('load', () => { measure(); dock(); });
+    measure(); dock();
   } else {
     const setHdr = () => header && header.classList.toggle('scrolled', window.scrollY > 30);
     addEventListener('scroll', setHdr, { passive: true }); setHdr();
