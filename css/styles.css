@@ -29,6 +29,7 @@ em{font-style:italic}
 
 /* ---------- abertura: logo grande encolhe pro header no scroll ---------- */
 .brandmark{position:fixed;top:50%;left:50%;width:min(620px,72vw);z-index:45;transform:translate(-50%,-50%);transform-origin:center center;will-change:transform;pointer-events:none}
+.brandmark::before{content:"";position:absolute;inset:-50% -16%;z-index:-1;pointer-events:none;background:radial-gradient(58% 62% at 45% 52%,var(--creme) 0%,var(--creme) 42%,rgba(245,231,218,0) 80%);opacity:calc(1 - var(--introp,0))}
 .brandmark img{width:100%;height:auto;display:block;filter:drop-shadow(0 14px 36px rgba(43,26,20,.20));transition:filter .3s}
 .brandmark.docked img{filter:none}
 .intro{height:100vh;display:flex;align-items:flex-end;justify-content:center;padding-bottom:7vh;pointer-events:none}
