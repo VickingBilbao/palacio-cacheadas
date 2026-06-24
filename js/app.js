@@ -15,20 +15,20 @@
     document.body.classList.add('has-intro');
     const easeInOut = t => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
     const curlStage = document.querySelector('.curl-stage');
-    let tW = 0, tCx = 0, tCy = 0, baseW = 1;            // destino (header) cacheado
-    const measure = () => {                              // mede só no load/resize, FORA do scroll → sem layout-thrash (fim dos trancos)
+    let tW = 0, tCx = 0, tCy = 0, baseW = 1, vh0 = 1, vw0 = 1;   // destino + viewport CACHEADOS
+    const measure = () => {                              // mede só no load/resize, FORA do scroll → sem layout-thrash
       const t = headerLogo.getBoundingClientRect();
       tW = t.width; tCx = t.left + t.width / 2; tCy = t.top + t.height / 2;
       baseW = brand.offsetWidth || 1;
+      vh0 = window.innerHeight || 1; vw0 = window.innerWidth || 1; // ESTÁVEL: não recalcula no scroll → fim do "tranco" quando a barra de endereço some no mobile
     };
     const dock = () => {
-      const introH = window.innerHeight || 1;          // transição = 1 viewport de scroll
-      const p = Math.min(Math.max(window.scrollY / introH, 0), 1);
+      const p = Math.min(Math.max(window.scrollY / vh0, 0), 1);  // referência fixa (vh0), não o innerHeight vivo
       const e = easeInOut(p);
       const scale = 1 + (tW / baseW - 1) * e;
-      const introDx = window.innerWidth <= 900 ? -window.innerWidth * 0.12 * (1 - e) : 0; // mobile: logo levemente à esquerda no intro, some ao ancorar
-      const tx = (tCx - window.innerWidth / 2) * e + introDx;
-      const ty = (tCy - window.innerHeight / 2) * e;
+      const introDx = vw0 <= 900 ? -vw0 * 0.12 * (1 - e) : 0;    // mobile: logo levemente à esquerda no intro, some ao ancorar
+      const tx = (tCx - vw0 / 2) * e + introDx;
+      const ty = (tCy - vh0 / 2) * e;
       brand.style.transform = `translate(-50%,-50%) translate(${tx}px,${ty}px) scale(${scale})`;
       const es = e.toFixed(3);
       header.style.setProperty('--navop', es);

@@ -32,7 +32,7 @@ em{font-style:italic}
 .brandmark::before{content:"";position:absolute;inset:-50% -16%;z-index:-1;pointer-events:none;background:radial-gradient(58% 62% at 45% 52%,var(--creme) 0%,var(--creme) 42%,rgba(245,231,218,0) 80%);opacity:calc(1 - var(--introp,0))}
 .brandmark img{width:100%;height:auto;display:block;filter:drop-shadow(0 14px 36px rgba(43,26,20,.20));transition:filter .3s}
 .brandmark.docked img{filter:none}
-.intro{height:100vh;display:flex;align-items:flex-end;justify-content:center;padding-bottom:7vh;pointer-events:none}
+.intro{height:100svh;display:flex;align-items:flex-end;justify-content:center;padding-bottom:7vh;pointer-events:none}
 .intro__hint{display:flex;flex-direction:column;align-items:center;gap:.7em;font-size:.72rem;font-weight:460;letter-spacing:.3em;text-transform:uppercase;color:var(--cobre)}
 .intro__hint::after{content:"";width:1px;height:30px;background:linear-gradient(var(--cobre),transparent);animation:hintpulse 1.8s var(--e1) infinite}
 @keyframes hintpulse{0%,100%{opacity:.3;transform:scaleY(.7)}50%{opacity:1;transform:scaleY(1)}}
