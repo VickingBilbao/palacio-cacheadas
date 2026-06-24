@@ -158,3 +158,39 @@
   renderGrid();
   updateCart();
 })();
+
+/* ---------- Linha reel: vídeo dos produtos scrubbado pelo scroll (na íntegra) ---------- */
+(() => {
+  const canvas = document.querySelector('[data-reel-canvas]');
+  if (!canvas || matchMedia('(prefers-reduced-motion:reduce)').matches) return; // reduced-motion: fica só o poster
+  const RF = 72, ctx = canvas.getContext('2d'), stage = canvas.closest('.linha-reel');
+  const imgs = []; let sized = false, cur = -1, ticking = false;
+  const pad = n => String(n).padStart(3, '0');
+  const draw = idx => {
+    const im = imgs[idx];
+    if (!im || !im.complete || !im.naturalWidth || idx === cur) return;
+    cur = idx; ctx.clearRect(0, 0, canvas.width, canvas.height); ctx.drawImage(im, 0, 0, canvas.width, canvas.height);
+  };
+  const update = () => {
+    if (stage) {
+      const r = stage.getBoundingClientRect(), vh = window.innerHeight || 1;
+      const p = Math.min(Math.max((vh - r.top) / (vh + r.height), 0), 1); // entra embaixo (0) → sai em cima (1) = vídeo inteiro
+      draw(Math.min(RF - 1, Math.round(p * (RF - 1))));
+    }
+    ticking = false;
+  };
+  for (let i = 1; i <= RF; i++) {
+    const im = new Image();
+    im.onload = () => {
+      if (!sized && im.naturalWidth) { canvas.width = im.naturalWidth; canvas.height = im.naturalHeight; sized = true; cur = -1; } // backing nativo 1280×720 = nitidez
+      update();
+    };
+    im.src = `assets/loja/linha-reel/r_${pad(i)}.jpg?v=1`;
+    imgs.push(im);
+  }
+  const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
+  addEventListener('scroll', onScroll, { passive: true });
+  addEventListener('resize', onScroll, { passive: true });
+  addEventListener('load', update);
+  update();
+})();

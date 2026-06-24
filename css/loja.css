@@ -92,6 +92,10 @@
 .linha-banner__text .display{font-size:clamp(1.7rem,4vw,3.2rem);color:var(--espresso);max-width:13ch}
 .linha-banner__text .display em{font-style:italic;color:var(--terracota)}
 .linha-banner__text .lead{max-width:42ch;margin:.7rem 0 1.5rem;color:var(--ink-soft)}
+/* reel cinematográfica: vídeo dos produtos scrubbado no scroll, frame 16:9 inteiro (na íntegra) */
+.linha-reel{position:relative;width:100%;aspect-ratio:16/9;border-radius:18px;overflow:hidden;margin-bottom:clamp(1.4rem,3vw,2.4rem);box-shadow:0 22px 54px rgba(43,26,20,.18);background:var(--creme-2)}
+.linha-reel__poster,.linha-reel__canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.linha-reel__canvas{z-index:1}
 @media (max-width:560px){
   .linha-banner{display:block;min-height:0;overflow:visible;box-shadow:none}
   .linha-banner__bg{position:static;height:200px;border-radius:16px;box-shadow:0 14px 34px rgba(43,26,20,.16)}
