@@ -163,7 +163,7 @@
 (() => {
   const canvas = document.querySelector('[data-reel-canvas]');
   if (!canvas || matchMedia('(prefers-reduced-motion:reduce)').matches) return; // reduced-motion: fica só o poster
-  const RF = 72, ctx = canvas.getContext('2d'), stage = canvas.closest('.linha-reel');
+  const RF = 72, HOLD = 0.16, ctx = canvas.getContext('2d'), track = canvas.closest('.linha-reel-track');
   const imgs = []; let sized = false, cur = -1, ticking = false;
   const pad = n => String(n).padStart(3, '0');
   const draw = idx => {
@@ -172,10 +172,12 @@
     cur = idx; ctx.clearRect(0, 0, canvas.width, canvas.height); ctx.drawImage(im, 0, 0, canvas.width, canvas.height);
   };
   const update = () => {
-    if (stage) {
-      const r = stage.getBoundingClientRect(), vh = window.innerHeight || 1;
-      const p = Math.min(Math.max((vh - r.top) / (vh + r.height), 0), 1); // entra embaixo (0) → sai em cima (1) = vídeo inteiro
-      draw(Math.min(RF - 1, Math.round(p * (RF - 1))));
+    if (track) {
+      const r = track.getBoundingClientRect(), vh = window.innerHeight || 1;
+      const total = r.height - vh;                                  // fase grudada (sticky)
+      const prog = total > 0 ? Math.min(Math.max(-r.top / total, 0), 1) : 0;
+      const play = Math.min(prog / (1 - HOLD), 1);                  // toca o vídeo nos primeiros (1-HOLD); últimos HOLD seguram o último frame
+      draw(Math.min(RF - 1, Math.round(play * (RF - 1))));
     }
     ticking = false;
   };

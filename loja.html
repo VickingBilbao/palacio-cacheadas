@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,400..600&family=Jost:wght@300..500&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="css/styles.css?v=7" />
-<link rel="stylesheet" href="css/loja.css?v=8" />
+<link rel="stylesheet" href="css/loja.css?v=9" />
 </head>
 <body class="shop-body">
 
@@ -40,10 +40,6 @@
 
   <!-- LINHA EXCLUSIVA (marca própria) -->
   <section class="linha" id="linha">
-    <figure class="linha-reel" data-rise aria-label="Linha Palácio das Cacheadas — os produtos em movimento">
-      <img class="linha-reel__poster" data-reel-fallback src="assets/loja/linha-reel/r_001.jpg?v=1" alt="Linha exclusiva Palácio das Cacheadas em movimento" loading="lazy" />
-      <canvas class="linha-reel__canvas" data-reel-canvas aria-hidden="true"></canvas>
-    </figure>
     <div class="linha-banner" data-rise>
       <img class="linha-banner__bg" src="assets/loja/linha-banner.jpg?v=2" alt="" loading="lazy" />
       <div class="linha-banner__text">
@@ -51,6 +47,15 @@
         <h2 class="display">Linha <em>Palácio das Cacheadas</em></h2>
         <p class="lead">Tratamento próprio para cabelos cacheados e crespos — do shampoo ao óleo finalizador, com pacotes de cronograma e definição.</p>
         <a href="#linha-grid" class="btn btn--solid">Ver a linha</a>
+      </div>
+    </div>
+    <!-- reel cinematográfica PINNED: gruda no centro, scroll toca o vídeo inteiro, segura o último frame, então revela os produtos -->
+    <div class="linha-reel-track" data-reel-track aria-label="Linha Palácio das Cacheadas — os produtos em movimento">
+      <div class="linha-reel-sticky">
+        <figure class="linha-reel">
+          <img class="linha-reel__poster" data-reel-fallback src="assets/loja/linha-reel/r_001.jpg?v=1" alt="Linha exclusiva Palácio das Cacheadas em movimento" loading="lazy" />
+          <canvas class="linha-reel__canvas" data-reel-canvas aria-hidden="true"></canvas>
+        </figure>
       </div>
     </div>
     <ul class="shop-grid" data-grid-linha id="linha-grid"></ul>
@@ -99,6 +104,6 @@
 
 <script src="js/loja-data.js?v=1"></script>
 <script src="js/loja-linha.js?v=2"></script>
-<script src="js/loja.js?v=3"></script>
+<script src="js/loja.js?v=4"></script>
 </body>
 </html>
