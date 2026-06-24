@@ -179,9 +179,11 @@ body.has-intro .hdr .nav{opacity:var(--navop,0)}
 
 /* ---------- responsivo ---------- */
 @media (max-width:900px){
-  /* intro: cacho escuro; ao rolar (--introp 0→1) desliza pra direita e some, liberando o texto */
-  .curl-stage{opacity:calc(.8 - var(--introp,0) * .66);transform:translateX(calc(var(--introp,0) * 62%));transform-origin:right center;will-change:transform,opacity}
-  .curl-canvas,.curl-fallback{object-position:78% center}
+  /* intro: cacho escuro confinado à DIREITA (creme à esquerda p/ o logo, sem sobrepor); ao rolar (--introp 0→1) desliza e some */
+  .curl-stage{left:auto;width:62%;opacity:calc(.82 - var(--introp,0) * .68);transform:translateX(calc(var(--introp,0) * 92%));transform-origin:right center;will-change:transform,opacity}
+  .curl-canvas,.curl-fallback{object-position:72% center}
+  .brandmark{width:min(400px,60vw)}
+  .brandmark::before{display:none} /* respiro de creme só no desktop (sobre creme); mobile separa espacialmente */
   .col{width:100%;margin-left:0;padding-inline:var(--pad)}
   .nav a:not(.btn){display:none}
   .community .community__photo{margin-left:0;padding-inline:var(--pad);width:100%}

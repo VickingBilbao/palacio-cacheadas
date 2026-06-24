@@ -21,7 +21,8 @@
       const t = headerLogo.getBoundingClientRect();     // destino: lugar do logo no header
       const baseW = brand.offsetWidth || 1;
       const scale = 1 + (t.width / baseW - 1) * e;
-      const tx = (t.left + t.width / 2 - window.innerWidth / 2) * e;
+      const introDx = window.innerWidth <= 900 ? -window.innerWidth * 0.12 * (1 - e) : 0; // mobile: logo levemente à esquerda no intro, some ao ancorar
+      const tx = (t.left + t.width / 2 - window.innerWidth / 2) * e + introDx;
       const ty = (t.top + t.height / 2 - window.innerHeight / 2) * e;
       brand.style.transform = `translate(-50%,-50%) translate(${tx}px,${ty}px) scale(${scale})`;
       header.style.setProperty('--navop', e.toFixed(3));
@@ -53,7 +54,7 @@
   const curlFb = document.querySelector('[data-curl-fallback]');
   if (curlFb) curlFb.src = `assets/${cset}/f_001.jpg`;
   const canvas = document.querySelector('[data-curl-canvas]');
-  if (canvas && !reduced) {
+  if (canvas && !reduced && window.innerWidth > 900) { // mobile: sem scrub pesado — cacho estático (fallback) + recede CSS = fluido
     const FRAMES = 60;
     const ctx = canvas.getContext('2d');
     const imgs = []; let loaded = 0, ready = false, cur = -1, sized = false;
