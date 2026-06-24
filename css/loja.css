@@ -108,6 +108,7 @@
 /* badge "Exclusivo" */
 .card,.card__media{position:relative}
 .card__badge{position:absolute;top:.7rem;left:.7rem;z-index:2;background:var(--terracota);color:var(--creme);font-size:.6rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;padding:.4em .75em;border-radius:100px;box-shadow:0 4px 12px rgba(43,26,20,.18)}
+.card__badge--clean{background:#6f8a5e}  /* curadoria sem parabenos — verde natural (distingue do terracota Exclusivo) */
 .card--excl{border-color:rgba(197,106,74,.34)}
 
 @media (max-width:560px){

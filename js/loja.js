@@ -33,7 +33,7 @@
   const card = p => `
     <li class="card${p.exclusive ? ' card--excl' : ''}">
       <div class="card__media">
-        ${p.exclusive ? '<span class="card__badge">Exclusivo</span>' : ''}
+        ${p.exclusive ? '<span class="card__badge">Exclusivo</span>' : (p.badge ? `<span class="card__badge card__badge--clean">${esc(p.badge)}</span>` : '')}
         <img src="${p.img}" alt="${esc(p.name)}" loading="lazy" />
       </div>
       <div class="card__body">
@@ -58,7 +58,9 @@
   const filtersEl = document.querySelector('[data-filters]');
   const emptyEl = document.querySelector('[data-empty]');
   let activeCat = 'Todos';
-  const cats = ['Todos', ...['Kits', 'Finalizadores', 'Tratamento', 'Outros'].filter(c => OTHER.some(p => p.cat === c))];
+  const CATORDER = ['Shampoo', 'Condicionador', 'Máscara', 'Creme de pentear', 'Finalizador'];
+  const present = new Set(OTHER.map(p => p.cat).filter(Boolean));
+  const cats = ['Todos', ...CATORDER.filter(c => present.has(c)), ...[...present].filter(c => !CATORDER.includes(c))];
   filtersEl.innerHTML = cats.map(c => `<button class="chip${c === 'Todos' ? ' is-active' : ''}" data-cat="${c}">${c}</button>`).join('');
   filtersEl.addEventListener('click', e => {
     const b = e.target.closest('.chip'); if (!b) return;
