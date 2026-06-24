@@ -13,37 +13,52 @@
 
   if (hasIntro) {
     document.body.classList.add('has-intro');
-    const easeInOut = t => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
-    const curlStage = document.querySelector('.curl-stage');
-    let tW = 0, tCx = 0, tCy = 0, baseW = 1, vh0 = 1, vw0 = 1;   // destino + viewport CACHEADOS
-    const measure = () => {                              // mede só no load/resize, FORA do scroll → sem layout-thrash
-      const t = headerLogo.getBoundingClientRect();
-      tW = t.width; tCx = t.left + t.width / 2; tCy = t.top + t.height / 2;
-      baseW = brand.offsetWidth || 1;
-      vh0 = window.innerHeight || 1; vw0 = window.innerWidth || 1; // ESTÁVEL: não recalcula no scroll → fim do "tranco" quando a barra de endereço some no mobile
-    };
-    const dock = () => {
-      const p = Math.min(Math.max(window.scrollY / vh0, 0), 1);  // referência fixa (vh0), não o innerHeight vivo
-      const e = easeInOut(p);
-      const scale = 1 + (tW / baseW - 1) * e;
-      const introDx = vw0 <= 900 ? -vw0 * 0.12 * (1 - e) : 0;    // mobile: logo levemente à esquerda no intro, some ao ancorar
-      const tx = (tCx - vw0 / 2) * e + introDx;
-      const ty = (tCy - vh0 / 2) * e;
-      brand.style.transform = `translate(-50%,-50%) translate(${tx}px,${ty}px) scale(${scale})`;
-      const es = e.toFixed(3);
-      header.style.setProperty('--navop', es);
-      // --introp só nos CONSUMIDORES (cacho + brandmark), não no :root → invalidação de estilo mínima = fluido
-      if (curlStage) curlStage.style.setProperty('--introp', es);
-      brand.style.setProperty('--introp', es);
-      header.classList.toggle('scrolled', p > 0.9);
-      brand.classList.toggle('docked', p > 0.98);
-    };
-    let tick = false;
-    const onScroll = () => { if (!tick) { tick = true; requestAnimationFrame(() => { dock(); tick = false; }); } };
-    addEventListener('scroll', onScroll, { passive: true });
-    addEventListener('resize', () => { measure(); dock(); }, { passive: true });
-    addEventListener('load', () => { measure(); dock(); });
-    measure(); dock();
+    const mob = matchMedia('(max-width:900px)').matches;
+    if (mob) {
+      /* MOBILE: intro DISCRETO — só uma classe ao cruzar o limiar; logo/cacho/header animam por TRANSIÇÃO CSS (compositor) = sincronia nativa, sem "outro fps" */
+      let done = false;
+      const onScrollM = () => {
+        const d = window.scrollY > 44;
+        if (d === done) return;
+        done = d;
+        document.body.classList.toggle('intro-done', d);
+        header.classList.toggle('scrolled', d);
+        header.style.setProperty('--navop', d ? '1' : '0');
+      };
+      addEventListener('scroll', onScrollM, { passive: true });
+      onScrollM();
+    } else {
+      /* DESKTOP: scrub contínuo do logo (fluido no desktop) */
+      const easeInOut = t => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+      const curlStage = document.querySelector('.curl-stage');
+      let tW = 0, tCx = 0, tCy = 0, baseW = 1, vh0 = 1, vw0 = 1;
+      const measure = () => {
+        const t = headerLogo.getBoundingClientRect();
+        tW = t.width; tCx = t.left + t.width / 2; tCy = t.top + t.height / 2;
+        baseW = brand.offsetWidth || 1;
+        vh0 = window.innerHeight || 1; vw0 = window.innerWidth || 1;
+      };
+      const dock = () => {
+        const p = Math.min(Math.max(window.scrollY / vh0, 0), 1);
+        const e = easeInOut(p);
+        const scale = 1 + (tW / baseW - 1) * e;
+        const tx = (tCx - vw0 / 2) * e;
+        const ty = (tCy - vh0 / 2) * e;
+        brand.style.transform = `translate(-50%,-50%) translate(${tx}px,${ty}px) scale(${scale})`;
+        const es = e.toFixed(3);
+        header.style.setProperty('--navop', es);
+        if (curlStage) curlStage.style.setProperty('--introp', es);
+        brand.style.setProperty('--introp', es);
+        header.classList.toggle('scrolled', p > 0.9);
+        brand.classList.toggle('docked', p > 0.98);
+      };
+      let tick = false;
+      const onScroll = () => { if (!tick) { tick = true; requestAnimationFrame(() => { dock(); tick = false; }); } };
+      addEventListener('scroll', onScroll, { passive: true });
+      addEventListener('resize', () => { measure(); dock(); }, { passive: true });
+      addEventListener('load', () => { measure(); dock(); });
+      measure(); dock();
+    }
   } else {
     const setHdr = () => header && header.classList.toggle('scrolled', window.scrollY > 30);
     addEventListener('scroll', setHdr, { passive: true }); setHdr();

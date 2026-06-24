@@ -179,12 +179,20 @@ body.has-intro .hdr .nav{opacity:var(--navop,0)}
 
 /* ---------- responsivo ---------- */
 @media (max-width:900px){
-  /* intro: cacho escuro confinado à DIREITA (creme à esquerda p/ o logo, sem sobrepor); ao rolar (--introp 0→1) desliza e some */
-  .curl-stage{left:auto;width:62%;opacity:calc(.82 - var(--introp,0) * .68);transform:translateX(calc(var(--introp,0) * 92%));transform-origin:right center;will-change:transform,opacity}
+  /* intro DISCRETO no mobile: estados fixos + TRANSIÇÕES CSS (compositor) — sincronia nativa, fim do "outro fps". O JS só liga a classe .intro-done ao cruzar o limiar de scroll. */
+  .curl-stage{left:auto;width:62%;opacity:.82;transform:translateX(0);transform-origin:right center;will-change:transform,opacity;transition:transform .8s cubic-bezier(.4,0,.2,1),opacity .8s ease}
+  body.intro-done .curl-stage{transform:translateX(98%);opacity:.1}   /* cacho desliza pra direita + some */
   .curl-canvas,.curl-fallback{object-position:72% center}
-  .brandmark{width:min(400px,60vw)}
-  .brandmark::before{display:none} /* respiro de creme só no desktop (sobre creme); mobile separa espacialmente */
-  .brandmark img{filter:none} /* sem drop-shadow no mobile — re-renderiza ao escalar = trancos */
+  .brandmark{width:min(400px,60vw);transform:translate(-50%,-50%) translateX(-12vw);transition:transform .6s cubic-bezier(.4,0,.2,1),opacity .45s ease;will-change:transform,opacity}  /* logo à esquerda no intro (livre do cacho) */
+  body.intro-done .brandmark{opacity:0;transform:translate(-50%,-50%) translateX(-12vw) scale(.72);pointer-events:none}   /* fade-out do logo grande */
+  body.has-intro .hdr .logo{visibility:visible;opacity:0;transition:opacity .5s ease .12s}     /* logo real do header: crossfade in */
+  body.has-intro.intro-done .hdr .logo{opacity:1}
+  body.has-intro .hdr .nav{transition:opacity .5s ease .1s}                                      /* nav/botões fade suave (via --navop 0→1) */
+  .brandmark::before{display:none}
+  .brandmark img{filter:none}
+  .intro__hint{transition:opacity .4s ease}
+  body.intro-done .intro__hint{opacity:0}                  /* some o "role para entrar" ao entrar */
+  .intro{height:82svh}                                     /* intro um pouco mais curta no mobile → conteúdo chega mais cedo após o logo sair */
   .col{width:100%;margin-left:0;padding-inline:var(--pad)}
   .nav a:not(.btn){display:none}
   .community .community__photo{margin-left:0;padding-inline:var(--pad);width:100%}
