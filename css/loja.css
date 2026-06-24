@@ -101,7 +101,7 @@
 @media (max-width:900px){
   .linha-banner{display:none}            /* no mobile/tablet o reel é o abre-alas; banner estático sai */
   .linha-reel-track{height:240vh}        /* menos scroll no mobile */
-  .linha-reel{aspect-ratio:auto;height:82vh;width:100vw;margin-inline:calc(50% - 50vw);border-radius:0}  /* full-bleed: preenche a tela edge-to-edge (corta menos que portrait estreito) — mata o espaço vazio */
+  .linha-reel{aspect-ratio:auto;height:90vh;width:100vw;margin-inline:calc(50% - 50vw);border-radius:0}  /* full-bleed com o vídeo 9:16 NATIVO: preenche a tela, corte mínimo (vs. o corte pesado do 16:9) */
 }
 .mais{margin-top:1rem}
 

@@ -166,6 +166,8 @@
   const canvas = document.querySelector('[data-reel-canvas]');
   if (!canvas || matchMedia('(prefers-reduced-motion:reduce)').matches) return; // reduced-motion: fica só o poster
   const RF = 72, HOLD = 0.16, ctx = canvas.getContext('2d'), track = canvas.closest('.linha-reel-track');
+  const dir = matchMedia('(max-width:900px)').matches ? 'linha-reel-v' : 'linha-reel'; // mobile: vídeo 9:16 nativo; desktop: 16:9
+  const fb = document.querySelector('[data-reel-fallback]'); if (fb) fb.src = `assets/loja/${dir}/r_001.jpg?v=1`;
   const imgs = []; let sized = false, cur = -1, ticking = false;
   const pad = n => String(n).padStart(3, '0');
   const draw = idx => {
@@ -189,7 +191,7 @@
       if (!sized && im.naturalWidth) { canvas.width = im.naturalWidth; canvas.height = im.naturalHeight; sized = true; cur = -1; } // backing nativo 1280×720 = nitidez
       update();
     };
-    im.src = `assets/loja/linha-reel/r_${pad(i)}.jpg?v=1`;
+    im.src = `assets/loja/${dir}/r_${pad(i)}.jpg?v=1`;
     imgs.push(im);
   }
   const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
