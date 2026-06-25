@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,400..600&family=Jost:wght@300..500&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="css/styles.css?v=7" />
-<link rel="stylesheet" href="css/loja.css?v=12" />
+<link rel="stylesheet" href="css/loja.css?v=13" />
 </head>
 <body class="shop-body">
 
@@ -68,9 +68,20 @@
       <h2 class="display">Marcas que a gente confia</h2>
       <p class="lead">Naturais, pouca química e linhas profissionais — selecionadas pra cuidar do seu cacho e crespo de verdade.</p>
     </div>
+    <div class="catcards" data-catcards aria-label="Categorias"></div>
     <div class="shop-filters" data-filters aria-label="Filtrar por categoria"></div>
     <ul class="shop-grid" data-grid></ul>
     <p class="shop-empty" data-empty hidden>Nenhum produto nesta categoria.</p>
+  </section>
+
+  <!-- reviews (ilustrativas) -->
+  <section class="reviews" id="avaliacoes">
+    <div class="section-head" data-rise>
+      <p class="kicker">Quem usou</p>
+      <h2 class="display">Amado por <em>Rainhas</em></h2>
+      <p class="lead">Depoimentos ilustrativos (exemplo) — a coletar com clientes reais.</p>
+    </div>
+    <div class="reviews__grid" data-reviews-grid></div>
   </section>
 
 </main>
@@ -97,14 +108,27 @@
   <ul class="cart__items" data-cart-items></ul>
   <p class="cart__empty" data-cart-empty>Sua sacola está vazia.<br /><span>Adicione produtos para continuar.</span></p>
   <div class="cart__foot" data-cart-foot hidden>
+    <div class="cart__ship" data-cart-ship hidden></div>
+    <div class="cart__lines">
+      <div class="cart__line"><span>Subtotal</span><b data-cart-sub>R$ 0,00</b></div>
+      <div class="cart__line"><span>Frete</span><b data-cart-frete>—</b></div>
+    </div>
     <div class="cart__total"><span>Total</span><strong data-cart-total>R$ 0,00</strong></div>
     <a class="btn btn--solid cart__checkout" data-cart-checkout target="_blank" rel="noopener">Finalizar no WhatsApp</a>
-    <p class="cart__note">Você confirma o pedido e o pagamento (Pix) com a gente no WhatsApp.</p>
+    <p class="cart__note">Você confirma o pedido e o pagamento (Pix) com a gente no WhatsApp. <span class="cart__ilus">Frete e condições ilustrativos (exemplo).</span></p>
   </div>
 </aside>
 
+<!-- modal de produto (quick-view) -->
+<div class="pmodal" data-pmodal hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="Detalhes do produto">
+  <div class="pmodal__card" data-pmodal-card></div>
+</div>
+
+<!-- toasts -->
+<div class="toasts" data-toasts aria-live="polite"></div>
+
 <script src="js/loja-data.js?v=2"></script>
 <script src="js/loja-linha.js?v=2"></script>
-<script src="js/loja.js?v=6"></script>
+<script src="js/loja.js?v=7"></script>
 </body>
 </html>
